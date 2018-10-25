@@ -3,7 +3,7 @@ error_reporting(0);//抑制所有错误信息
 @header("content-Type: text/html; charset=utf-8");//语言强制
 ob_start();
 date_default_timezone_set('Asia/Shanghai');//此句用于消除时间差
-$time_start= microtime_float();
+$time_start= microtime_float(); 
  
 /**
 *
@@ -72,18 +72,18 @@ class ServerInfo{
         $this->NetWork = $this->GetNetWork();
     }
     public function OS(){
-        returnDIRECTORY_SEPARATOR == '/'?true:false;
+        return DIRECTORY_SEPARATOR == '/'?true:false;
     }
     public function GetsysInfo(){
-        switch(PHP_OS) {
-            case'Linux':
+        switch(PHP_OS) { 
+            case 'Linux':
                 $sysInfo = $this->sys_linux();
                 break;
-            case'FreeBSD':
+            case 'FreeBSD':
                 $sysInfo = $this->sys_freebsd();
                 break;
             default:
-                # code...
+               // $sysInfo = $this->sys_windows();  
                 break;
         }
         return $sysInfo;
@@ -179,6 +179,9 @@ class ServerInfo{
         $resmem = $this->formatmem($resmem);
         $res = array_merge($res,$resmem);
         return $res;
+    }
+    public function sys_windows() {
+    	echo 111;die;
     }
     public function do_command($cName,$args){ //执行系统命令FreeBSD
         $cName = empty($cName)?'sysctl':timr($cName);
@@ -377,17 +380,17 @@ class ServerInfo{
         $str= phpversion($cName);
         return empty($str)?'<font color=red>×</font>':$str;
     }
-    public function GetDBVer($dbname){
+    public function GetDBVer($dbname){ 
         if(empty($dbname))return '错误';
         switch($dbname) {
             case'mysql':
-                if(function_exists("mysql_get_server_info")){
-                    $s= @mysql_get_server_info();
+                if(function_exists("mysql_get_server_info")){ 
+                    $s= @mysql_get_server_info();  
                     $s= $s ? '&nbsp; mysql_server 版本：'.$s:'';
                     $c= @mysql_get_client_info();
-                    $c= $c ? '&nbsp; mysql_client 版本：'.$c:'';
-                    return$s.$c;
-                }
+                    $c= $c ? '&nbsp; mysql_client 版本：'.$c:''; 
+                    return $s.$c;
+                } 
                 return'';
                 break;
             case'sqlite':
@@ -694,7 +697,12 @@ function displayData(dataJSON){
     </div>
     <!--Server Real-Time-->
     <div class="con">
-        <div class="j_top">服务器实时数据</div>
+        <div class="j_top">服务器实时数据
+        <?php 
+        	if (PHP_OS == 'WINNT') {
+        		echo '<a href="SystemInfoWindows.php" target="_blank">windows服务器</a>';
+        	}
+        ?></div> 
         <div class="j_tb">
             <div class="j_td" style="width: 50%">
 	            <label class="j_td j_td_t">服务器当前时间</label>
@@ -897,8 +905,8 @@ function displayData(dataJSON){
         </div>
         <div class="j_tb">
             <div class="j_td"style="width: 50%">
-	            <labelclass="j_td j_td_t1">"&lt;% %&gt;"ASP风格标记（asp_tags）：</label>
-	            <labelclass="j_td"><?php echo $S::show("asp_tags");?></label>
+	            <label class="j_td j_td_t1">"&lt;% %&gt;"ASP风格标记（asp_tags）：</label>
+	            <label class="j_td"><?php echo $S::show("asp_tags");?></label>
             </div>
             <div class="j_td"style="width: 50%">
 	            <label class="j_td j_td_t1">忽略重复错误信息（ignore_repeated_errors）：</label>
@@ -1094,7 +1102,7 @@ function displayData(dataJSON){
     <!--第三方组件信息-->
     <div class="con">
         <div class="j_top">第三方组件</div>
-        <div class="j_tb"><?php echo $zendInfo= $S::GetZendInfo();?>
+        <div class="j_tb"><!-- <?php echo $zendInfo= $S::GetZendInfo();?> -->
             <div class="j_td" style="width: 50%">
 	            <label class="j_td j_td_t1">Zend版本</label>
 	            <label class="j_td"><?php echo $zendInfo['ver'];?></label>
@@ -1125,7 +1133,7 @@ function displayData(dataJSON){
             </div>
         </div>
     </div>
-    <a name="w_db"></a>
+    <a name="j_db"></a>
     <!--db-->
     <div class="con">
         <div class="j_top">数据库支持</div>
@@ -1145,8 +1153,8 @@ function displayData(dataJSON){
 	            <label class="j_td"><?php echo $S::isfun("ora_close");?></label>
             </div>
             <div class="j_td" style="width: 50%">
-            <labelclass="j_td j_td_t1">SQL Server 数据库：</label>
-            <labelclass="j_td"><?php echo $S::isfun("mssql_close");?></label>
+            <label class="j_td j_td_t1">SQL Server 数据库：</label>
+            <label class="j_td"><?php echo $S::isfun("mssql_close");?></label>
             </div>
         </div>
         <div class="j_tb">
@@ -1182,7 +1190,7 @@ function displayData(dataJSON){
         <div class="j_tb">
             <div class="j_td" style="width: 50%">
             	<label class="j_td j_td_t1">DBA 数据库：</label>
-            	<labelc lass="j_td"><?php echo $S::isfun("dba_close");?></label>
+            	<label class="j_td"><?php echo $S::isfun("dba_close");?></label>
             </div>
             <div class="j_td" style="width: 50%">
             	<label class="j_td j_td_t1">DBM 数据库：</label>
